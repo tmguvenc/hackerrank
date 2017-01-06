@@ -1,4 +1,5 @@
 #include <iostream>
+#include <sstream>
 
 using namespace std;
 
@@ -37,16 +38,16 @@ private:
     void sink(int k){
         while(2*k <= N){
             int j = 2*k;
-            if(j < N && comperator(m_arr[j], m_arr[j+1]))
+            if(j < N && comparator(m_arr[j], m_arr[j+1]))
                 j++;
-            if(!comperator(m_arr[k], m_arr[j]))
+            if(!comparator(m_arr[k], m_arr[j]))
                 break;
             exch(k, j);
             k = j;
         }
     }
     void swim(int k){
-        while(k > 1 && comperator(m_arr[k/2], m_arr[k])){
+        while(k > 1 && comparator(m_arr[k/2], m_arr[k])){
             exch(k, k/2);
             k = k/2;
         }
@@ -62,23 +63,46 @@ private:
     T *m_arr;
     int m_max_size;
     int N;
-    Comp comperator;
+    Comp comparator;
 };
 
 int main(int argc, char *argv[])
 {
     using MaxPQ = PriorityQueue<char, less<char>>;
     using MinPQ = PriorityQueue<char, greater<char>>;
-    MaxPQ queue(100);
+    MaxPQ max_queue(1000);
+    MinPQ min_queue(1000);
 
-    for(auto c : "Turan Murat Guvenc")
-        queue.push(c);
+    stringstream ss;
+    string line;
 
-    while(!queue.empty()){
-        cout << queue.top();
-        queue.pop();
+    while(std::getline(std::cin, line)){
+        ss << line;
     }
 
-    cout<<endl;
+    const auto str = ss.str();
+
+    cout << str << endl << endl;
+
+    for(auto c : str){
+        if(c == ' ') continue;
+        max_queue.push(c);
+        min_queue.push(c);
+    }
+
+    cout << "Descending: \t";
+    while(!max_queue.empty()){
+        cout << max_queue.top();
+        max_queue.pop();
+    }
+
+    cout << endl << "Ascending: \t";
+
+    while(!min_queue.empty()){
+        cout << min_queue.top();
+        min_queue.pop();
+    }
+
+    cout << endl;
     return 0;
 }
