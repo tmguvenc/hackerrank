@@ -35,9 +35,8 @@ void mergesort(int arr[], int temp[], int left_start, int right_end){
 }
 
 void mergesort(int arr[], int size){
-    int *temp = new int[size];
+    int temp[1000] = {0};
     mergesort(arr, temp, 0, size - 1);
-    delete[] temp;
 }
 
 int main(int argc, char *argv[])
