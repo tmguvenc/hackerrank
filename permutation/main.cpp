@@ -2,32 +2,29 @@
 #include <vector>
 using namespace std;
 
-void permutate(string str, string& output, bool used[]){
-    if(output.size() == str.size()){
-        cout << output << endl;
+void permutate(string source, vector<string>& dest, int start, int end){
+    if(start == end){
+        dest.push_back(source);
         return;
     }
 
-    for(int i = 0; i < str.size(); ++i){
-        if(used[i]) continue;
-        output.push_back(str[i]);
-        used[i] = true;
-        permutate(str, output, used);
-        used[i] = false;
-
+    for(int i = start; i<=end; ++i){
+        swap(source[start], source[i]);
+        permutate(source, dest, start + 1, end);
+        swap(source[start], source[i]);
     }
+}
+
+vector<string> permutate(string source){
+    vector<string> permutations;
+    permutate(source, permutations, 0, source.size() - 1);
+    return permutations;
 }
 
 int main(int argc, char *argv[])
 {
-    string aa = "murat";
-    bool used[aa.length()];
-
-    for(int i = 0; i < aa.size(); ++i)
-        used[i] = false;
-
-    string output;
-
-    permutate("murat", output, used);
+    string m("murat");
+    for(auto& p : permutate(m))
+        cout << p << endl;
     return 0;
 }
