@@ -1,5 +1,5 @@
 #include <iostream>
-#include <vector>
+#include <queue>
 
 using namespace std;
 
@@ -35,8 +35,16 @@ public:
     }
 
     int kthSmallestSum(int k){
-        int index = 0;
-        return kthSmallestSum_internal(root, k, index);
+        //int index = 0;
+        //return kthSmallestSum_internal(root, k, index);
+        queue<int> q;
+        kthSmallestSum_with_queue(root, k, q);
+        int sum = 0;
+        while (!q.empty()) {
+            sum += q.front();
+            q.pop();
+        }
+        return sum;
     }
 
     void inOrder(){
@@ -59,6 +67,15 @@ private:
             return val;
 
         return val + kthSmallestSum_internal(root->right, k, index);
+    }
+
+    void kthSmallestSum_with_queue(Node<T>* root, int k, queue<int>& q){
+        if(!root || q.size() >= k)
+            return;
+
+        kthSmallestSum_with_queue(root->left, k, q);
+        if(q.size() < k) q.push(root->data);
+        kthSmallestSum_with_queue(root->right, k, q);
     }
 
     void inOrder_internal(Node<T>* root){
@@ -103,6 +120,9 @@ int main(int argc, char *argv[])
     bst.insert(10);
     bst.insert(14);
     bst.insert(22);
+    bst.insert(16);
+    bst.insert(19);
+    bst.insert(23);
 
     bst.inOrder();
 
